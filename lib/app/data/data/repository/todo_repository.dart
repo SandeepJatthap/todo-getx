@@ -1,44 +1,53 @@
-import 'package:todo/app/data/data/model/todo_model.dart';
-
-import '../model/generic_response.dart';
-import '../model/send_login_otp_response.dart';
+import '../model/task_create_response.dart';
+import '../model/task_model.dart';
 import '../provider/remote/DiaApiBaseHelper.dart';
 
 class TodoRepository {
-  Future<List<TodoItem>> getAllTodos() async {
+  Future<List<TaskModel>> getAllTodos() async {
     try {
       var res = await DioApiBaseHelper.get(
         DioApiBaseHelper.todo,
       );
-      return List<TodoItem>.from(res.map((l) => TodoItem.fromMap(l))).toList();
-    } catch (error, stacktrace) {
+      return List<TaskModel>.from(res.map((l) => TaskModel.fromJson(l)))
+          .toList();
+    } catch (error) {
       return [];
     }
   }
 
-  Future<GenericResponse?> createTodo(Map<String, dynamic> data) async {
+  Future<TaskCreateResponse?> createTodo(Map<String, dynamic> data) async {
     try {
       var res = await DioApiBaseHelper.postDio(DioApiBaseHelper.todo, data);
-      return GenericResponse.fromJson(res);
-    } catch (error, stacktrace) {
+      return TaskCreateResponse.fromJson(res);
+    } catch (error) {
       return null;
     }
   }
 
-  Future<GenericResponse?> updateTodo(Map<String, dynamic> data) async {
+  Future<TaskCreateResponse?> markTaskDone(String id) async {
+    try {
+      var res =
+          await DioApiBaseHelper.postDio("${DioApiBaseHelper.todo}/$id", {});
+      return TaskCreateResponse.fromJson(res);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  Future<TaskCreateResponse?> updateTodo(Map<String, dynamic> data) async {
     try {
       var res = await DioApiBaseHelper.putDio(DioApiBaseHelper.todo, data);
-      return GenericResponse.fromJson(res);
-    } catch (error, stacktrace) {
+      return TaskCreateResponse.fromJson(res);
+    } catch (error) {
       return null;
     }
   }
 
-  Future<GenericResponse?> deleteDio(String id) async {
+  Future<TaskCreateResponse?> deleteDio(String id) async {
     try {
-      var res = await DioApiBaseHelper.putDio(DioApiBaseHelper.todo, id);
-      return GenericResponse.fromJson(res);
-    } catch (error, stacktrace) {
+      var res = await DioApiBaseHelper.deleteDio(DioApiBaseHelper.todo, id);
+      return TaskCreateResponse.fromJson(res);
+    } catch (error) {
       return null;
     }
   }

@@ -2,14 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'DioWithInterceptors.dart';
 
 class DioApiBaseHelper {
-  static String baseUrl = "https://api-medyseva-saas.tejpage.com/api/v1";
+  static String baseUrl = "https://api-medyseva-saas.tejpage.com/api/v1/";
   static String todo = 'todo';
   static String verifyOtp = 'auth/verifyLoginOtp';
 
   static get(String url) async {
     try {
       final response = await getDio().get(baseUrl + url);
-
       return response.data;
     } catch (e, s) {
       if (kDebugMode) {

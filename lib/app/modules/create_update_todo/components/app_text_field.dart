@@ -7,6 +7,7 @@ class AppTextField extends StatelessWidget {
   final String hint;
   final int? minLines;
   final int? maxLines;
+  final bool readOnly;
 
   const AppTextField({
     super.key,
@@ -15,6 +16,7 @@ class AppTextField extends StatelessWidget {
     this.validator,
     this.minLines,
     this.maxLines,
+    this.readOnly = false,
   });
 
   @override
@@ -23,13 +25,14 @@ class AppTextField extends StatelessWidget {
       controller: controller,
       validator: validator,
       minLines: minLines,
+      readOnly: readOnly,
       maxLines: maxLines,
       decoration: InputDecoration(
         hintText: hint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
         ),
-        enabledBorder:OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
         ),
       ),

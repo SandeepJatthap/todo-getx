@@ -16,28 +16,31 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('TODO'),
+        title: const Text('Tasks'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(Routes.CREATE_UPDATE_TODO);
-        },
+        onPressed: controller.onNewTaskClick,
         child: const Icon(Icons.add),
       ),
       body: Obx(() => controller.loadingTodos.value
           ? const AppLoader()
-          : ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                var todo = controller.todoList[index];
-                return TodoItemView(
-                    onClick: () {
-                      Get.toNamed(Routes.CREATE_UPDATE_TODO, arguments: todo);
-                    },
-                    todoItem: todo);
+          : RefreshIndicator(
+              onRefresh: () async {
+                await controller.getTodos(showLoader: false);
               },
-              itemCount: controller.todoList.length,
-            )),
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  var todo = controller.todoList[index];
+                  return TodoItemView(
+                    onClick: () => controller.onTaskClick(todo),
+                    todoItem: todo,
+                    onDelete: () => controller.deleteTask(todo),
+                    onDone: () => controller.markTaskDone(todo),
+                  );
+                },
+                itemCount: controller.todoList.length,
+              ))),
     ));
   }
 }

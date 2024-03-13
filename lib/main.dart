@@ -5,12 +5,16 @@ import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 import 'package:timezone/data/latest.dart' as timezone;
 
+import 'app/utils/services/internet_connectivity_service.dart';
 import 'app/utils/services/notification_service.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   timezone.initializeTimeZones();
+  final connectionStatus = ConnectionStatusSingleton.instance;
+  connectionStatus.initialize();
+
   runApp(
     GetMaterialApp(
       title: "Application",
