@@ -6,7 +6,6 @@ import '../../../data/data/repository/todo_repository.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/message_handler.dart';
 import '../../../utils/services/internet_connectivity_service.dart';
-import '../../../utils/services/notification_service.dart';
 
 class HomeController extends GetxController {
   final loadingTodos = false.obs;
@@ -71,7 +70,6 @@ class HomeController extends GetxController {
       var response = await repository.deleteDio(todo.id!.toString());
       if (response?.id != null) {
         AppMessageHandler.showErrorMessage("Task deleted successfully");
-        NotificationService().cancelNotitication(response!.id!.toInt());
         getTodos(showLoader: false);
       } else {
         AppMessageHandler.showErrorMessage(
@@ -91,7 +89,6 @@ class HomeController extends GetxController {
       var response = await repository.markTaskDone(todo.id!.toString());
       if (response?.id != null) {
         AppMessageHandler.showErrorMessage("Task done successfully");
-        NotificationService().cancelNotitication(response!.id!.toInt());
         getTodos(showLoader: false);
       } else {
         AppMessageHandler.showErrorMessage(

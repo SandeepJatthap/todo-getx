@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo/app/data/data/model/task_model.dart';
 import 'package:todo/app/utils/message_handler.dart';
-
 import '../../../data/data/repository/todo_repository.dart';
 import '../../../utils/services/internet_connectivity_service.dart';
-import '../../../utils/services/notification_service.dart';
 
 class CreateUpdateTodoController extends GetxController {
   final todo = Get.arguments as TaskModel?;
@@ -58,15 +56,6 @@ class CreateUpdateTodoController extends GetxController {
   }
 
   Future<void> submit() async {
-
-    NotificationService().showNotification(
-        89,
-        titleController.text.trim(),
-        "description",
-        DateTime.now().add(const Duration(minutes: 2)),
-        Colors.green,
-        0);
-    return;
     if (hasConnection.value) {
       submitting(true);
       var data = buildData();
@@ -77,14 +66,6 @@ class CreateUpdateTodoController extends GetxController {
         AppMessageHandler.showErrorMessage(todo == null
             ? "Task created successfully"
             : "Task updated successfully");
-        NotificationService().showNotification(
-            response!.id!.toInt(),
-            titleController.text.trim(),
-            "description",
-            DateTime.now().add(const Duration(minutes: 10)),
-            Colors.green,
-            5);
-        // NotificationService().cancelNotitication(editedEvent.id);
 
         Get.back(result: true);
       } else {
@@ -103,7 +84,6 @@ class CreateUpdateTodoController extends GetxController {
       var response = await repository.deleteDio(todo!.id!.toString());
       if (response?.id != null) {
         AppMessageHandler.showErrorMessage("Task deleted successfully");
-        NotificationService().cancelNotitication(response!.id!.toInt());
         Get.back(result: true);
       } else {
         AppMessageHandler.showErrorMessage(
@@ -121,7 +101,6 @@ class CreateUpdateTodoController extends GetxController {
       var response = await repository.markTaskDone(todo!.id!.toString());
       if (response?.id != null) {
         AppMessageHandler.showErrorMessage("Task done successfully");
-        NotificationService().cancelNotitication(response!.id!.toInt());
         Get.back(result: true);
       } else {
         AppMessageHandler.showErrorMessage(
