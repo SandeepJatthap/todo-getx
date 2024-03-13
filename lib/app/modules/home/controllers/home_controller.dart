@@ -59,6 +59,8 @@ class HomeController extends GetxController {
     var response = await repository.getAllTodos();
     if (response.isNotEmpty) {
       todoList(response);
+    }else{
+      todoList.clear();
     }
     loadingTodos(false);
   }
